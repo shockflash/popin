@@ -1,0 +1,5 @@
+- Integration of CSRF check of django
+- More documentation
+- Unittests
+- Popin "login_required" decorator variation, with own LOGIN_URL_POPIN setting variable.
+  Name could be login_requiered_popin
