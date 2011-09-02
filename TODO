@@ -3,3 +3,5 @@
 - Unittests
 - Popin "login_required" decorator variation, with own LOGIN_URL_POPIN setting variable.
   Name could be login_requiered_popin
+- Popin "get_object_or_404" decoation variation. Needs to send another 404 error page,
+  usage in popups

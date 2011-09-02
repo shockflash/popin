@@ -4,7 +4,7 @@
     position: fixed; left: 0; top: 0;
     width: 100%; height: 100%;
     opacity: .80;
-    z-index: 9999;
+    z-index: 900;
 }
 
 .popin_main {
@@ -16,7 +16,7 @@
     font-size: 1.2em;
     position: fixed;
     top: 50%; left: 50%;
-    z-index: 99999;
+    z-index: 901;
 
     /*--CSS3 Box Shadows--*/
     -webkit-box-shadow: 0px 0px 20px #000;
@@ -26,4 +26,12 @@
     -webkit-border-radius: 10px;
     -moz-border-radius: 10px;
     border-radius: 10px;
+}
+
+.popin_loadinglayer {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
 }

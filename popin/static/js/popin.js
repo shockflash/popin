@@ -29,6 +29,7 @@ function popin(url) {
 function popinCls() {
     this.element;
     this.fade;
+    this.loadingHtml = '';
 
     this.useFade = true;
 
@@ -38,6 +39,10 @@ function popinCls() {
 
         this.fade = jQuery('<div class="popin_fade"></div>')
         jQuery('body').append(this.fade);
+    }
+
+    this.setLoadingHtml = function(html) {
+        this.loadingHtml = html;
     }
 
     this.setUseFade = function(value) {
@@ -66,14 +71,28 @@ function popinCls() {
             this.fade.hide();
     }
 
+    this.clear = function() {
+        this.setContent('');
+    }
+
     this.open = function(url) {
+        this.clear();
         this.load(url);
         this.show();
     }
 
+    this.showLoading = function() {
+        var d = jQuery('<div class="popin_loadinglayer"></div>');
+        d.html(this.loadingHtml);
+        this.element.append(d);
+    }
+
     this.load = function(url) {
         var self = this;
-        $.get(url, function(data) {
+
+        this.showLoading();
+
+        jQuery.get(url, function(data) {
             if (data.action == 'redirect')
             {
                 self.load(data.content);
@@ -85,6 +104,7 @@ function popinCls() {
 
     this.setContent = function(content) {
         this.element.html(content);
+        this.center();
     }
 
     this.height = function(value) {
@@ -98,8 +118,13 @@ function popinCls() {
     }
 
     this.center = function() {
-        this.element.css("top", (($(window).height() - this.element.outerHeight()) / 2) + $(window).scrollTop() + "px");
-        this.element.css("left", (($(window).width() - this.element.outerWidth()) / 2) + $(window).scrollLeft() + "px");
+        this.element.css("top", ((jQuery(window).height() - this.element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
+        this.element.css("left", ((jQuery(window).width() - this.element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
+    }
+
+    this.dynamicSize = function() {
+        this.element.removeAttr('width');
+        this.element.removeAttr('height');
     }
 
     this.size = function(width, height) {
