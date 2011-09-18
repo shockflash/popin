@@ -39,6 +39,12 @@ function popinCls() {
 
         this.fade = jQuery('<div class="popin_fade"></div>')
         jQuery('body').append(this.fade);
+
+        var self = this;
+        jQuery(window).resize(function() {
+            self.sizeCheck();
+            self.center();
+        });
     }
 
     this.setLoadingHtml = function(html) {
@@ -76,6 +82,8 @@ function popinCls() {
     }
 
     this.open = function(url) {
+        this.element.css('overflow', 'none');
+        this.dynamicSize();
         this.clear();
         this.load(url);
         this.show();
@@ -104,17 +112,52 @@ function popinCls() {
 
     this.setContent = function(content) {
         this.element.html(content);
+        this.sizeCheck();
         this.center();
     }
 
     this.height = function(value) {
-        this.element.height(value);
-        this.center();
+        if (value)
+        {
+            this.element.height(value);
+            this.sizeCheck();
+            this.center();
+        }
+
+        return this.element.height();
     }
 
     this.width = function(value) {
-        this.element.width(value);
-        this.center();
+        if (value)
+        {
+            this.element.width(value);
+            this.sizeCheck();
+            this.center();
+        }
+        return this.element.width();
+    }
+
+    /**
+     * To ensure that the popin is never bigger then the browser window, we
+     * do a size check on resize.
+     * If the popin window is bigger then the screen, we made is a little bit
+     * smaller and set this as the fixed height, even whem the popin window is
+     * normally dynamic.
+     */
+    this.sizeCheck = function() {
+        /* height check */
+        if (jQuery(window).height() < this.element.outerHeight())
+        {
+            this.element.height(jQuery(window).height() - 200);
+            this.element.css('overflow', 'auto');
+        }
+
+        /* width check */
+        if (jQuery(window).width() < this.element.outerWidth())
+        {
+            this.element.width(jQuery(window).width() - 200);
+            this.element.css('overflow', 'auto');
+        }
     }
 
     this.center = function() {
@@ -123,8 +166,8 @@ function popinCls() {
     }
 
     this.dynamicSize = function() {
-        this.element.removeAttr('width');
-        this.element.removeAttr('height');
+        this.element.css('width', "auto");
+        this.element.css('height', "auto");
     }
 
     this.size = function(width, height) {
