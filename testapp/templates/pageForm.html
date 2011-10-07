@@ -1,0 +1,12 @@
+#{% csrf_token %}#
+
+<form action="/pageFormDone" onsubmit="return popin().formSubmit(this)">
+  {% csrf_token %}
+  TextField1: <input type="text" name="textfield1" value="test value"><br>
+  Text: <textarea name="maintext">Example code</textarea><br>
+  Gender: Male <input type="radio" name="gender" value="Male"> | Female <input type="radio" name="gender" value="Female"><br>
+  <input type="submit">
+</form>
+
+
+<a href="Javascript: popin().hide();">Close</a>

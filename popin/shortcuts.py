@@ -1,4 +1,5 @@
 import json
+from django.views.decorators.csrf import csrf_protect
 from django.template import loader, RequestContext
 from django.http import HttpResponse, Http404
 
@@ -16,7 +17,10 @@ def render_to_popin(*args, **kwargs):
 def redirect_popin(url, *args, **kwargs):
     """
     Returns a HttpResponse that contains an json array that informs Popin
-    to redirect to another url
+    to redirect to another url.
+
+    Most of the time a standard HTTPRedirect repsonse will work fine, this is
+    only an option.
     """
     return HttpResponse(json.dumps({
             'action': 'redirect',

@@ -96,18 +96,21 @@ function popinCls() {
     }
 
     this.load = function(url) {
-        var self = this;
-
         this.showLoading();
 
+        var self = this;
         jQuery.get(url, function(data) {
-            if (data.action == 'redirect')
-            {
-                self.load(data.content);
-                return;
-            }
-            self.setContent(data.content);
+            self._handle_result(data);
         });
+    }
+
+    this._handle_result = function(data) {
+        if (data.action == 'redirect')
+        {
+            this.load(data.content);
+            return;
+        }
+        this.setContent(data.content);
     }
 
     this.setContent = function(content) {
@@ -161,8 +164,11 @@ function popinCls() {
     }
 
     this.center = function() {
-        this.element.css("top", ((jQuery(window).height() - this.element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
-        this.element.css("left", ((jQuery(window).width() - this.element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
+        this.element.css("top", ((jQuery(window).height() - this.element.outerHeight()) / 2)  + "px");
+        this.element.css("left", ((jQuery(window).width() - this.element.outerWidth()) / 2)  + "px");
+
+        //this.element.css("top", ((jQuery(window).height() - this.element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
+        //this.element.css("left", ((jQuery(window).width() - this.element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
     }
 
     this.dynamicSize = function() {
@@ -173,6 +179,31 @@ function popinCls() {
     this.size = function(width, height) {
         this.width(width);
         this.height(height);
+    }
+
+    /**
+     * Handles the form submit, converts a normal form request to an special
+     * ajax request. Current page keeps unchanged, but the answer needs to be
+     * in popin-style
+     */
+    this.formSubmit = function(form) {
+        form = jQuery(form)
+
+        data = form.serialize();
+        url = form.attr('action');
+
+        var self = this;
+        $.ajax({
+            type: 'POST',
+            url: url,
+            data: data,
+            success: function(data) {
+                self._handle_result(data);
+            }
+        });
+
+
+        return false; // prevent submit of the form
     }
 
     /* call init */
