@@ -193,7 +193,7 @@ function popinCls() {
         url = form.attr('action');
 
         var self = this;
-        $.ajax({
+        jQuery.ajax({
             type: 'POST',
             url: url,
             data: data,
@@ -201,7 +201,6 @@ function popinCls() {
                 self._handle_result(data);
             }
         });
-
 
         return false; // prevent submit of the form
     }
