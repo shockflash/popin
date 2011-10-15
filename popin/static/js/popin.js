@@ -33,6 +33,9 @@ function popinCls() {
 
     this.useFade = true;
 
+    this.heightScroll = false;
+    this.widthScroll = false;
+
     this.init = function() {
         this.element = jQuery('<div class="popin_main"></div>')
         jQuery('body').append(this.element);
@@ -148,19 +151,82 @@ function popinCls() {
      * normally dynamic.
      */
     this.sizeCheck = function() {
+        var overflow = 'keep';
+        var recall = false; // true if we need to call sizeCheck again
+
         /* height check */
-        if (jQuery(window).height() < this.element.outerHeight())
+        if (jQuery(window).height() < (this.element.outerHeight() + 100))
         {
-            this.element.height(jQuery(window).height() - 200);
-            this.element.css('overflow', 'auto');
+            /* mark that we changed to auto-height. And saved old value */
+            if (!this.heightScroll)
+            {
+              this.heightScroll = true;
+
+              if (!this.heightScrollPrev) // only the first init value is usefull
+              {
+                this.heightScrollPrev = this.element.outerHeight();
+              }
+            }
+
+            var height = jQuery(window).height() - 100;
+            if (height < 100) // min height
+              height = 100;
+
+            this.element.height(height);
+            overflow = 'auto';
+        } else if (this.heightScroll) {
+            /* if heightScroll active, but no longer true, reset it */
+            this.heightScroll = false;
+
+            if (overflow == 'keep') // overwrite only if not needed as auto
+              overflow = 'reset';
+            this.element.height(this.heightScrollPrev);
+
+            recall = true;
         }
 
         /* width check */
-        if (jQuery(window).width() < this.element.outerWidth())
+        if (jQuery(window).width() < (this.element.outerWidth() + 100))
         {
-            this.element.width(jQuery(window).width() - 200);
-            this.element.css('overflow', 'auto');
+            /* mark that we changed to auto-width. And saved old value */
+            if (this.widthScroll)
+            {
+              this.widthScroll = true;
+
+              if (!this.widthScrollPrev) // only the first init value is usefull
+              {
+                this.widthScrollPrev = this.element.outerWidth();
+              }
+            }
+            var width = jQuery(window).width() - 100;
+            if (width < 100) // min width
+              width = 100;
+
+            this.element.width(width);
+            overflow = 'auto';
+        } else if (this.widthScroll) {
+            /* if heightScroll active, but no longer true, reset it */
+            this.widthScroll = false;
+
+            if (overflow == 'keep') // overwrite only if not needed as auto
+              overflow = 'reset';
+
+            this.element.width(this.widthScrollPrev);
+
+            recall = true;
         }
+
+        if (overflow == 'reset')
+          this.element.css('overflow', 'visible');
+        if (overflow == 'auto')
+          this.element.css('overflow', 'auto');
+
+        /* check again to see if the restored height/width is ok, or not matching.
+           Sometimes the restored height is better then the previous height/width,
+           but still not perfect. Mainly a problem then the screen size increases,
+           but still not big enough for the non-scrolled content */
+        if (recall)
+          this.sizeCheck();
     }
 
     this.center = function() {
@@ -174,11 +240,20 @@ function popinCls() {
     this.dynamicSize = function() {
         this.element.css('width', "auto");
         this.element.css('height', "auto");
+
+        this.widthScroll = false;
+        this.heightScroll = false;
+
+        this.widthScrollPrev = null;
+        this.heightScrollPrev = null;
     }
 
     this.size = function(width, height) {
         this.width(width);
         this.height(height);
+
+        this.widthScrollPrev = height;
+        this.heightScrollPrev = width;
     }
 
     /**
