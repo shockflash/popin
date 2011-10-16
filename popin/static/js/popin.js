@@ -277,6 +277,8 @@ function popinCls() {
             }
         });
 
+        this.showLoading();
+
         return false; // prevent submit of the form
     }
 
