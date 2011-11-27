@@ -21,8 +21,12 @@ urlpatterns = patterns('',
      (r'^pageForm$', direct_popin_to_template, {'template': 'pageForm.html'}),
      (r'^pageFormDone$', 'views.pageFormDone'),
 
+     (r'^pageFormError$', direct_popin_to_template, {'template': 'pageFormError.html'}),
+
      (r'^pageStandard$', pageStandardPopin),
      (r'^pageStandardRedirect$', pageStandardRedirectPopin),
+
+     (r'^page400$', 'views.page400'),
 
      (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.PROJECT_PATH + '/popin/static/'}),

@@ -104,7 +104,10 @@ function popinCls() {
         var self = this;
         jQuery.get(url, function(data) {
             self._handle_result(data);
-        });
+        })
+        .error(function(data) {
+            self._handle_error(data);
+        })
     }
 
     this._handle_result = function(data) {
@@ -114,6 +117,10 @@ function popinCls() {
             return;
         }
         this.setContent(data.content);
+    }
+
+    this._handle_error = function(data) {
+        this.setContent('Error! (<a href="javascript: void(popin().hide());">Close popup</a>)<hr>' + data.responseText);
     }
 
     this.setContent = function(content) {
@@ -274,6 +281,9 @@ function popinCls() {
             data: data,
             success: function(data) {
                 self._handle_result(data);
+            },
+            error:  function(data) {
+                self._handle_error(data);
             }
         });
 

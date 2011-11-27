@@ -1,0 +1,8 @@
+<form action="/pageError" onsubmit="return popin().formSubmit(this)">
+  {% csrf_token %}
+  TextField1: <input type="text" name="textfield1" value="test value"><br>
+  <input type="submit">
+</form>
+
+
+<a href="Javascript: popin().hide();">Close</a>
