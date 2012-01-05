@@ -158,7 +158,9 @@ function popinCls() {
      * normally dynamic.
      */
     this.sizeCheck = function() {
-        var overflow = 'keep';
+        var overflowX = 'keep';
+        var overflowY = 'keep';
+
         var recall = false; // true if we need to call sizeCheck again
 
         /* height check */
@@ -180,13 +182,13 @@ function popinCls() {
               height = 100;
 
             this.element.height(height);
-            overflow = 'auto';
+            overflowY = 'auto';
         } else if (this.heightScroll) {
             /* if heightScroll active, but no longer true, reset it */
             this.heightScroll = false;
 
-            if (overflow == 'keep') // overwrite only if not needed as auto
-              overflow = 'reset';
+            if (overflowY == 'keep') // overwrite only if not needed as auto
+              overflowY = 'reset';
             this.element.height(this.heightScrollPrev);
 
             recall = true;
@@ -210,23 +212,28 @@ function popinCls() {
               width = 100;
 
             this.element.width(width);
-            overflow = 'auto';
+            overflowX = 'auto';
         } else if (this.widthScroll) {
             /* if heightScroll active, but no longer true, reset it */
             this.widthScroll = false;
 
-            if (overflow == 'keep') // overwrite only if not needed as auto
-              overflow = 'reset';
+            if (overflowX == 'keep') // overwrite only if not needed as auto
+              overflowX = 'reset';
 
             this.element.width(this.widthScrollPrev);
 
             recall = true;
         }
 
-        if (overflow == 'reset')
-          this.element.css('overflow', 'visible');
-        if (overflow == 'auto')
-          this.element.css('overflow', 'auto');
+        if (overflowY == 'reset')
+          this.element.css('overflow-y', 'visible');
+        if (overflowY == 'auto')
+          this.element.css('overflow-y', 'auto');
+
+        if (overflowX == 'reset')
+          this.element.css('overflow-x', 'visible');
+        if (overflowX == 'auto')
+          this.element.css('overflow-x', 'auto');
 
         /* check again to see if the restored height/width is ok, or not matching.
            Sometimes the restored height is better then the previous height/width,
