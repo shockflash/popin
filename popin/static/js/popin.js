@@ -28,6 +28,7 @@ function popin(url) {
  */
 function popinCls() {
     this.element;
+    this.closeElement;
     this.fade;
     this.loadingHtml = '';
 
@@ -40,10 +41,19 @@ function popinCls() {
         this.element = jQuery('<div class="popin_main"></div>')
         jQuery('body').append(this.element);
 
+        this.closeElement = jQuery('<div class="popin_close"></div>');
+        jQuery('body').append(this.closeElement);
+
         this.fade = jQuery('<div class="popin_fade"></div>')
         jQuery('body').append(this.fade);
 
+        /* events */
         var self = this;
+
+        this.closeElement.click(function() {
+            self.hide();
+        });
+
         jQuery(window).resize(function() {
             self.sizeCheck();
             self.center();
@@ -71,10 +81,14 @@ function popinCls() {
 
         if (this.useFade)
             this.fade.show();
+
+        this.positionCloseButon();
+        this.closeElement.show();
     }
 
     this.hide = function() {
         this.element.hide();
+        this.closeElement.hide();
 
         if (this.useFade)
             this.fade.hide();
@@ -125,6 +139,7 @@ function popinCls() {
 
     this.setContent = function(content) {
         this.element.html(content);
+
         this.sizeCheck();
         this.center();
     }
@@ -241,11 +256,15 @@ function popinCls() {
            but still not big enough for the non-scrolled content */
         if (recall)
           this.sizeCheck();
+
+        this.positionCloseButon();
     }
 
     this.center = function() {
         this.element.css("top", ((jQuery(window).height() - this.element.outerHeight()) / 2)  + "px");
         this.element.css("left", ((jQuery(window).width() - this.element.outerWidth()) / 2)  + "px");
+
+        this.positionCloseButon();
 
         //this.element.css("top", ((jQuery(window).height() - this.element.outerHeight()) / 2) + jQuery(window).scrollTop() + "px");
         //this.element.css("left", ((jQuery(window).width() - this.element.outerWidth()) / 2) + jQuery(window).scrollLeft() + "px");
@@ -269,6 +288,14 @@ function popinCls() {
         this.widthScrollPrev = height;
         this.heightScrollPrev = width;
     }
+
+    /* Places the close button to its requiered position top-right of the
+       window */
+    this.positionCloseButon = function() {
+        var o = this.element.offset();
+
+        this.closeElement.css('left', o.left + this.element.outerWidth() + 6 );
+        this.closeElement.css('top', parseInt(this.element.css('top')) - 13);    }
 
     /**
      * Handles the form submit, converts a normal form request to an special

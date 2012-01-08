@@ -28,6 +28,17 @@
     border-radius: 10px;
 }
 
+.popin_close {
+    background-image: url(../images/close.png);
+    position: fixed;
+    left: -100px;
+    top: -100px;
+    width: 36px;
+    height: 36px;
+    z-index: 1000;
+    display: none;
+}
+
 .popin_loadinglayer {
     position: absolute;
     top: 0px;
