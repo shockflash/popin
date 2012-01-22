@@ -37,6 +37,7 @@
     height: 36px;
     z-index: 1000;
     display: none;
+    cursor: pointer;
 }
 
 .popin_loadinglayer {
