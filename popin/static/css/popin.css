@@ -1,9 +1,9 @@
 .popin_fade { /*--Transparent background layer--*/
     display: none; /*--hidden by default--*/
-    background: #000;
+    background: #FCFAEA;
     position: fixed; left: 0; top: 0;
     width: 100%; height: 100%;
-    opacity: .80;
+    opacity: 0.85;
     z-index: 900;
 }
 
