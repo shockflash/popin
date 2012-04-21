@@ -4,6 +4,7 @@
     position: fixed; left: 0; top: 0;
     width: 100%; height: 100%;
     opacity: 0.85;
+    filter:alpha(opacity=85);
     z-index: 900;
 }
 
